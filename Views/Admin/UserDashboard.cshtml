@@ -1,0 +1,40 @@
+@{
+    ViewData["Title"] = "User Dashboard";
+}
+@model IEnumerable<Dashboard.Models.User>;
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>All Users</h3>
+    </div>
+</div>
+<table class="table table-striped text-center">
+    <thead>
+        <tr>
+            <th class="text-center">ID</th>
+            <th class="text-center">Name</th>
+            <th class="text-center">Email</th>
+            <th class="text-center">Created_at</th>
+            <th class="text-center">User_Level</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach(var item in Model){
+                <form action="modify" method="POST">
+                    <tr>
+                        <td>@item.UserID</td>
+                        <td><a href="show/@item.UserID">@item.FirstName @item.LastName</a></td>
+                        <td>@item.Email</td>
+                        <td>@item.Created_at.ToString("MMM dd yyyy")</td>
+                        if(@item.UserLevel == 9){
+                            <td>Admin</td>
+                        }else{
+                            <td>Normal</td>
+                        }
+                    </tr>
+                </form>
+            }
+        }
+    </tbody>
+</table>

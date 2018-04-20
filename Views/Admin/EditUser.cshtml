@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+@model IEnumerable<Dashboard.Models.User>;
+
+<h1>Edit Profile</h1>
+@{
+    <div class="row">
+        @foreach(var item in Model){ 
+            <div class="col-md-6">
+                <h3>Edit Infomation</h3>
+                <form asp-controller="Admin" asp-action="EditInfo" method="POST" class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" value=@item.Email> 
+                    <span class="error" asp-validation-for="Email"></span>
+
+                    <h1>Register</h1>
+                    <label asp-for="FirstName">FirstName: </label>
+                    <input asp-for="FirstName" class="form-control" value=@item.FirstName>
+                    <span class="error" asp-validation-for="FirstName"></span>
+
+                    <label asp-for="LastName">LastName: </label>
+                    <input asp-for="LastName" class="form-control" value=@item.LastName>
+                    <span class="error" asp-validation-for="LastName"></span>
+
+                    <input type="hidden" value=@item.UserID name="UserID">
+                    <input type="hidden" value=@item.Password name="UserPW">
+                    <input type="hidden" value=@item.UserLevel name="UserLevel"
+                    <button type="submit" class="btn btn-info">Save</button>
+                </form>
+            </div>
+            }
+        @foreach(var item in Model){
+            <div class="col-md-6">
+                <h3>Change Password</h3>
+                    <form asp-controller="Admin" asp-action="EditPw" method="POST" class="form-group">
+                        <label asp-for="Password">Password: </label>
+                        <input asp-for="Password" class="form-control"> 
+                        <span class="error" asp-validation-for="Password"></span>
+
+                        <label asp-for="ConfirmedPW">Confirm Password</label>
+                        <input asp-for="ConfirmedPW" class="form-control">
+                        <span class="error" asp-validation-for="ConfirmedPW"></span>
+                        <br>
+                        <input type="hidden" value=@item.UserID name="UserID">
+                        <input type="hidden" value=@item.FirstName name="FirstName">
+                        <input type="hidden" value=@item.LastName name="LastName">
+                        <input type="hidden" value=@item.UserLevel name="UserLevel">
+                        <input type="hidden" value=@item.Email name="UserEmail">
+                        <button type="submit" class="btn btn-info">Create new User</button>
+                    </form>
+            </div>
+        }
+    </div>
+}

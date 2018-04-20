@@ -1,0 +1,76 @@
+@{
+    ViewData["Title"] = "User Information";
+}
+@model IEnumerable<Dashboard.Models.User>;
+
+@{
+    <form action="postMessage" method="POST">
+    @foreach(var item in Model){
+        <h1>@item.FirstName @item.LastName</h1>
+        <div class="row">
+            <div class="col-md-2"><p>Registered at:</p></div>
+            <div class="col-md-10"><p>@item.Created_at.ToString("MMMM dd yyyy")</p></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p>User ID:</p></div>
+            <div class="col-md-10"><p>@item.UserID</p></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p>Email Address:</p></div>
+            <div class="col-md-10"><p>@item.Email</p></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p>Description:</p></div>
+            <div class="col-md-10"><p>@item.Description</p></div>
+        </div>
+        <input type="hidden" name="reciever" value=@item.UserID>
+        
+        <h4>Leave a Message for @item.FirstName</h4>
+        <div class="row">
+            <textarea name="msg" class="col-md-12 form-control" required></textarea>
+        </div>
+        <p></p>
+        <div class="row text-right">
+            <input type="submit" class="btn btn-success">
+        </div>
+    }
+    </form>
+
+    <form action="postComment" method="POST">
+        @foreach(var item in Model){
+            foreach(var msg in item.Recieved){
+                int Min = (int)DateTime.Now.Subtract(@msg.Created_at).TotalMinutes;
+                <div class="row">
+                    <div class="col-md-6"><p>@msg.Writer.FirstName wrote</p></div>
+                    <div class="col-md-6 text-right"><p>@msg.Created_at</p></div>
+                </div>
+                <div class="row">
+                    <p class="col-md-6 box">@msg.Msg</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10">
+                        @foreach(var cmt in msg.Comments){
+                            <div class="row">
+                                <div class="col-md-6"><p>@cmt.User.FirstName wrote</p></div>
+                                <div class="col-md-6 text-right"><p>@cmt.Created_at</p></div>
+                            </div>
+                            <div class="row">
+                                @cmt.Cmt
+                            </div>
+                        }
+                        <div class="row">
+                            <input type="hidden" value="@msg.MessageID" name="msgID">
+                            <input type="hidden" value="@item.UserID" name="originalUserID">
+                            <textarea name="comment" placeholder="write a message" class="col-md-12"></textarea>
+                        </div>
+                            
+                            <div class="row text-right">
+                                <input type="submit" value="Submit" class="btn btn-success">
+                            </div>
+                    </div>
+                </div>
+                }
+            }
+    </form>
+}
